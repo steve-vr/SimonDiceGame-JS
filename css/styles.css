@@ -12,7 +12,7 @@ body {
   border-radius: 50%;
   overflow: hidden;
   margin: 0 auto;
-  max-height: 60vh;
+  max-height: 70vh;
   max-width: 60vh;
 }
 
@@ -63,14 +63,16 @@ body {
 }
 
 .btn-start {
-  width: 400px;
+  min-width: 320px;
   height: 100px;
   background: #ecf0f1;
   color: #2c3e50;
   font-size: 2.5rem;
   position: absolute;
   top: calc(50% - 50px);
-  left: calc(50% - 200px);
+  left: calc(50% - 160px);
+  border: none;
+  border-radius: 40px;
 }
 
 .hide {
