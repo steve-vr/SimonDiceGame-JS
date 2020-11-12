@@ -34,22 +34,34 @@ class Game {
   }
 
   nextLevel() {
+    this.sublevel = 0; 
     this.iluminateSequence();
+    this.addEventsClick();
   }
 
   trasnformNumberInColor(number) {
     switch (number) {
       case 0:
-        return 'lightblue'
-      
+        return 'lightblue'     
       case 1:
-        return 'violet'
-      
+        return 'violet'      
       case 2:
         return 'orange'
-      
       case 3:
         return 'green'
+    }
+  }
+
+  trasnformColorInNumber(color) {
+    switch (color) {
+      case 'lightblue':
+        return 0     
+      case 'violet':
+        return 1      
+      case 'orange':
+        return 2
+      case 'green':
+        return 3
     }
   }
 
@@ -71,6 +83,19 @@ class Game {
 
   turnOffColor(color) {
     this.colors[color].classList.remove('light');
+  }
+
+  addEventsClick() {
+    for(const color in this.colors) {
+      //this.colors[color].addEventListener('click', x => this.chooseColor(x)); 
+      this.colors[color].addEventListener('click', this.chooseColor); 
+    }
+  }  
+
+  chooseColor(ev) {
+    const nameColor = ev.target.dataset.color;
+    const numberColor = this.trasnformColorInNumber(nameColor)
+    this.iluminateColor(nameColor)
   }
 
 }
