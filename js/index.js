@@ -1,20 +1,22 @@
 
-const lightblue = document.getElementById('lightblue')
-const violet = document.getElementById('violet')
-const orange = document.getElementById('orange')
-const green = document.getElementById('green')
-const btnStart = document.getElementById('btnStart')
+const lightblue = document.getElementById('lightblue');
+const violet = document.getElementById('violet');
+const orange = document.getElementById('orange');
+const green = document.getElementById('green');
+const btnStart = document.getElementById('btnStart');
+const LAST_LEVEL = 10;
 
 class Game {
   constructor() {
     this.initialize();
     this.generateSequence();
-    this.nextLevel();
+    setTimeout(this.nextLevel, 500);
   }
 
   initialize() {
+    this.nextLevel = this.nextLevel.bind(this);
     btnStart.classList.add('hide');
-    this.level = 5;
+    this.level = 1;
     this.colors = {
       lightblue,
       violet,
@@ -24,7 +26,7 @@ class Game {
   }
 
   generateSequence() {
-    this.sequence = new Array(10)
+    this.sequence = new Array(LAST_LEVEL)
     .fill(0)
     .map(
       n => Math.floor(
@@ -69,15 +71,15 @@ class Game {
     for (let i = 0; i < this.level; i++) {
       const color = this.trasnformNumberInColor(this.sequence[i]); 
       setTimeout(
-        () => this.iluminateColor(color), 1000 * i
+        () => this.iluminateColor(color, i), 1000 * i
       );
     }
   }
 
-  iluminateColor(color) {
+  iluminateColor(color, i) {
     this.colors[color].classList.add('light');
     setTimeout(
-      () => this.turnOffColor(color), 350
+      () => this.turnOffColor(color, i), 350
     );
   }
 
@@ -88,16 +90,38 @@ class Game {
   addEventsClick() {
     for(const color in this.colors) {
       //this.colors[color].addEventListener('click', x => this.chooseColor(x)); 
-      this.colors[color].addEventListener('click', this.chooseColor); 
+      this.colors[color].addEventListener('click', this.chooseColor.bind(this)); 
+    }
+  }  
+
+  deleteEventClick() {
+    for(const color in this.colors) {
+      this.colors[color].removeEventListener('click', this.chooseColor.bind(this)); 
     }
   }  
 
   chooseColor(ev) {
     const nameColor = ev.target.dataset.color;
-    const numberColor = this.trasnformColorInNumber(nameColor)
-    this.iluminateColor(nameColor)
+    const numberColor = this.trasnformColorInNumber(nameColor);
+    this.iluminateColor(nameColor);
+    if(numberColor === this.sequence[this.sublevel]) {
+      this.sublevel++
+        if(this.sublevel === this.level) {
+          this.level++
+          this.deleteEventClick();
+          if(this.level === (LAST_LEVEL + 1)) {
+            this.winGame();
+          } else {
+            setTimeout(this.nextLevel(), 1500);
+          }
+        }
+    } else {
+      // this.loseGame();
+    }
   }
-
+  // winGame() {
+  //   swal('Ganaste!')
+  
 }
 
 function startGame() {
