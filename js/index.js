@@ -4,7 +4,7 @@ const violet = document.getElementById('violet');
 const orange = document.getElementById('orange');
 const green = document.getElementById('green');
 const btnStart = document.getElementById('btnStart');
-const LAST_LEVEL = 10;
+const LAST_LEVEL = 5;
 
 class Game {
   constructor() {
@@ -25,14 +25,16 @@ class Game {
     }
   }
 
+  // toogleBtnStart() {
+  //   (btnStart.classList.contains('hide')
+  //   ? btnStart.classList.remove('hide') 
+  //   :  btnStart.classList.contains('hide'))
+  // }
+
   generateSequence() {
     this.sequence = new Array(LAST_LEVEL)
     .fill(0)
-    .map(
-      n => Math.floor(
-        Math.random() * 4 
-      )
-    );
+    .map(n => Math.floor(Math.random() * 4 ));
   }
 
   nextLevel() {
@@ -41,7 +43,7 @@ class Game {
     this.addEventsClick();
   }
 
-  trasnformNumberInColor(number) {
+  transformNumberInColor(number) {
     switch (number) {
       case 0:
         return 'lightblue'     
@@ -54,7 +56,7 @@ class Game {
     }
   }
 
-  trasnformColorInNumber(color) {
+  transformColorInNumber(color) {
     switch (color) {
       case 'lightblue':
         return 0     
@@ -69,7 +71,7 @@ class Game {
 
   iluminateSequence() {
     for (let i = 0; i < this.level; i++) {
-      const color = this.trasnformNumberInColor(this.sequence[i]); 
+      const color = this.transformNumberInColor(this.sequence[i]); 
       setTimeout(
         () => this.iluminateColor(color, i), 1000 * i
       );
@@ -102,7 +104,7 @@ class Game {
 
   chooseColor(ev) {
     const nameColor = ev.target.dataset.color;
-    const numberColor = this.trasnformColorInNumber(nameColor);
+    const numberColor = this.transformColorInNumber(nameColor);
     this.iluminateColor(nameColor);
     if(numberColor === this.sequence[this.sublevel]) {
       this.sublevel++
@@ -112,18 +114,32 @@ class Game {
           if(this.level === (LAST_LEVEL + 1)) {
             this.winGame();
           } else {
-            setTimeout(this.nextLevel(), 1500);
+            setTimeout(this.nextLevel, 1500);
           }
         }
     } else {
-      // this.loseGame();
+      //this.loseGame()
+
     }
   }
   // winGame() {
-  //   swal('Ganaste!')
-  
+  //   swal("algo",'Ganaste!','success')
+  //   .then(() => {
+  //     this.initialize.bind(this); 
+  //     //this.toogleBtnStart();
+  //   });
+  // }
+  // loseGame() {
+  //   swal("algo",'Mala suerte!','error')
+  //   .then(() => { 
+  //     this.deleteEventClick(); 
+  //     this.initialize();
+  //     this.toogleBtnStart();
+  //   });
+  // }
 }
 
 function startGame() {
   window.game = new Game();
 }
+ 
